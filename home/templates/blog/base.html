@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{% static 'css/blog.css' %}" rel="stylesheet">
+</head>
+<body class="p-10 mx-auto flex space-x-5">
+    <div id="content" class="p-5 bg-slate-300 rounded-lg shadow-lg">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <div id="sidebar" class="p-5 bg-slate-300 rounded-lg shadow-lg min-w-60">
+        <h2 class="text-2xl text-sky-500 font-semibold">My blog</h2>
+    </div>
+</body>
+</html>

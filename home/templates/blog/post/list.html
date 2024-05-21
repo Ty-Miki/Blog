@@ -1,0 +1,20 @@
+{% extends "blog/base.html" %}
+
+{% block title %}My blog{% endblock %}
+
+{% block content %}
+    <h1 class="text-4xl text-sky-500 font-extrabold ">Blogs</h1>
+
+    {% for post in posts %}
+        <h2 class="py-10 text-center text-2xl font-bold ">
+            <a href="{% url 'blog:post_detail' post.id %}" class="hover:text-sky-500">
+                {{ post.title }}
+            </a>
+        </h2>
+        <p class="text-sky-300 font-medium italic">
+            Published {{ post.publish }} by {{ post.author }}
+        </p>
+        {{ post.body|truncatewords:30|linebreaks }}
+    {% endfor %}
+
+{% endblock %}
