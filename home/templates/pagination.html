@@ -1,0 +1,21 @@
+<div class="px-5 pt-10 flex justify-between">
+    <span>
+        {% if page.has_previous %}
+            <a href="?page={{ page.previous_page_number }}" class="hover:text-sky-500">
+                <button class="w-20 bg-white rounded-xl transform transition-transform duration-300 hover:scale-x-125">Previous</button>
+            </a>
+        {% endif %}
+    </span>
+
+    <span class="font-bold">
+        Page {{ page.number }} of {{ page.paginator.num_pages }}
+    </span>
+
+    <span>
+        {% if page.has_next %}
+            <a href="?page={{ page.next_page_number }}" class="hover:text-sky-500">
+                <button class="w-20 bg-white rounded-xl transform transition-transform duration-300 hover:scale-x-125">Next</button>
+            </a>
+        {% endif %}
+    </span>
+</div>

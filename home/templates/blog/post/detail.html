@@ -3,9 +3,34 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-    <h1>{{ post.title }}</h1>
-    <p class="date">
+    <h1 class="py-10 text-center text-2xl font-bold ">{{ post.title }}</h1>
+    <p class="text-sky-300 font-medium italic">
         Published {{ post.publish }} by {{ post.author }}
     </p>
     {{ post.body|linebreaks }}
+
+    <p class="py-10">
+        <a href="{% url 'blog:post_share' post.id %}">
+            <button class="w-full px-6 py-3 mt-3 text-lg text-white transition-all duration-150 ease-linear rounded-lg shadow outline-none bg-sky-500 hover:bg-sky-400 hover:shadow-lg focus:outline-none cursor-pointer">Share post</button>
+        </a>
+    </p>
+
+    {% if comments %}
+    {% with comments.count as total_comments %}
+        <h2 class="pb-10 font-bold italic">
+            {{ total_comments }} comment{{ total_comments|pluralize }}
+        </h2>
+    {% endwith %}
+    {% endif %}
+    {% for comment in comments %}
+        <div class="pb-10">
+            <p class="text-sky-300 font-medium italic">Comment {{ forloop.counter }} by {{ comment.name }}
+                {{ comment.created }}
+            </p>
+            {{ comment.body|linebreaks }}
+        </div>
+    {% empty %}
+        <p class="There are no comments"></p>
+    {% endfor %}
+    {% include "blog/post/includes/comment_form.html" %}
 {% endblock %}

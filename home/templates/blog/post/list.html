@@ -7,7 +7,7 @@
 
     {% for post in posts %}
         <h2 class="py-10 text-center text-2xl font-bold ">
-            <a href="{% url 'blog:post_detail' post.id %}" class="hover:text-sky-500">
+            <a href="{{ post.get_absolute_url }}" class="hover:text-sky-500">
                 {{ post.title }}
             </a>
         </h2>
@@ -16,5 +16,6 @@
         </p>
         {{ post.body|truncatewords:30|linebreaks }}
     {% endfor %}
-
+    
+    {% include "pagination.html" with page=posts %}
 {% endblock %}

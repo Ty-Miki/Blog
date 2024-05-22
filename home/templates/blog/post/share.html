@@ -1,0 +1,33 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Share a post{% endblock %}
+
+{% block content %}
+    {% if sent %}
+        <h1 class="pb-5 font-bold">Email successfully sent</h1>
+        <p>
+            <span class="text-sky-500 italic">{{ post.title }}</span> was successfully recomended to <span class="font-bold"> {{ form.cleaned_data.to }}</span>
+        </p>
+
+    {% else %}
+        <h1 class="font-bold">Share 
+            <span class="text-sky-500 italic">{{ post.title }}</span>.
+        </h1>
+            <form method="post" class="pt-6 px-8 pb-10 rounded-xl">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                {% for field in form %}
+                <div class="relative z-0 w-full mb-5">
+                    {{ field }}
+                    <label class="absolute duration-300 italic top-3 -z-1 origin-0 text-sky-500" for="{{ field.id_for_label }}">
+                        {{ field.label }}{% if field.field.required %}*{% endif %}
+                    </label>
+                </div>
+                {% endfor %}
+
+                <input type="submit" value="Send" class="w-full px-6 py-3 mt-3 text-lg text-white transition-all duration-150 ease-linear rounded-lg shadow outline-none bg-sky-500 hover:bg-sky-400 hover:shadow-lg focus:outline-none cursor-pointer">
+            </form>
+
+    {% endif %}
+{% endblock %}
