@@ -1,12 +1,12 @@
-<h2 class="pb-5 font-bold">Add a new comment</h2>
+<h2 class="py-5 font-bold">Add a new comment</h2>
 <form action="{% url 'blog:post_comment' post.id %}" method="post">
     {% csrf_token %}
     {{ form.non_field_errors }}
 
     {% for field in form %}
-        <div class="relative z-0 w-full mb-5">
+        <div class="relative z-0 mb-5">
             {{ field }}
-            <label class="absolute duration-300 italic top-3 -z-1 origin-0 text-sky-500" for="{{ field.id_for_label }}">
+            <label class="pl-5 absolute duration-300 italic top-1 -z-1 origin-0 text-sm text-sky-500" for="{{ field.id_for_label }}">
                 {{ field.label }}{% if field.field.required %}*{% endif %}
             </label>
         </div>

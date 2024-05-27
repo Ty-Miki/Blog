@@ -1,9 +1,15 @@
 {% extends "blog/base.html" %}
+{% load blog_tags %}
 
 {% block title %}My blog{% endblock %}
 
 {% block content %}
+    
     <h1 class="text-4xl text-sky-500 font-extrabold ">Blogs</h1>
+
+    {% if tag %}
+        <h2 class="pt-10 text-sm italic">Posts tagged with <span class="text-sky-500 font-bold">{{ tag.name }}.</span></h2>
+    {% endif %}
 
     {% for post in posts %}
         <h2 class="py-10 text-center text-2xl font-bold ">
@@ -11,10 +17,21 @@
                 {{ post.title }}
             </a>
         </h2>
-        <p class="text-sky-300 font-medium italic">
+
+        <p class="pb-5 italic font-bold">
+            Tags:
+            {% for tag in post.tags.all %}
+                <a href="{% url 'blog:post_list_by_tag' tag.slug %}" class=" hover:text-sky-500">
+                    {{ tag.name }}
+                </a>
+                {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+
+        <p class="text-right font-bold italic text-sm">
             Published {{ post.publish }} by {{ post.author }}
         </p>
-        {{ post.body|truncatewords:30|linebreaks }}
+        {{ post.body|markdown|truncatewords_html:30 }}
     {% endfor %}
     
     {% include "pagination.html" with page=posts %}

@@ -1,4 +1,6 @@
+{% load blog_tags %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,9 +10,6 @@
     <link href="{% static 'css/blog.css' %}" rel="stylesheet">
 
     <style>
-        .-z-1 {
-          z-index: -1;
-        }
       
         .origin-0 {
           transform-origin: 0%;
@@ -42,15 +41,6 @@
           color: rgba(0, 0, 0, var(--tw-text-opacity));
           left: 0px;
         }
-
-        input:-webkit-autofill,
-        input:-webkit-autofill:hover,
-        input:-webkit-autofill:focus,
-        input:-webkit-autofill:active {
-            -webkit-box-shadow: 0 0 0 30px white inset !important;
-            box-shadow: 0 0 0 30px white inset !important;
-            -webkit-text-fill-color: #000 !important;
-            caret-color: auto;}
       </style>
 </head>
 <body class="p-10 flex justify-center space-x-5">
@@ -60,7 +50,30 @@
     </div>
 
     <div id="sidebar" class="hidden p-5 bg-slate-300 rounded-lg shadow-lg min-w-60 md:block">
+
+        {% include "blog/post/includes/search_form.html" %}
+        
         <h2 class="text-2xl text-sky-500 font-semibold">My blog</h2>
+        
+        <p class="py-5 text-sm font-bold italic">I have written {% total_posts %} posts so far.</p>
+        
+        <h2 class="py-5 text-2xl font-bold">Latest posts</h2>
+        {% show_latest_posts %}
+
+        <h2 class="py-5 font-bold">Most commented posts</h2>
+        {% get_most_commented_posts as most_commented_posts %}
+        <ul class="pl-3 list-disc">
+          {% for post in most_commented_posts %}
+            <li>
+              <a href="{{ post.get_absolute_url }}" class="text-sm hover:text-sky-500">{{ post.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+
+        <p class="pt-10 font-bold italic text-sm">
+          <a href="{% url 'blog:post_feed' %}" class="hover:text-sky-500">Subscribe to my RSS feed</a>
+        </p>
     </div>
+
 </body>
 </html>

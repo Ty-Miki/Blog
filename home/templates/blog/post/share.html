@@ -20,7 +20,7 @@
                 {% for field in form %}
                 <div class="relative z-0 w-full mb-5">
                     {{ field }}
-                    <label class="absolute duration-300 italic top-3 -z-1 origin-0 text-sky-500" for="{{ field.id_for_label }}">
+                    <label class="pl-5 absolute duration-300 italic top-1 -z-1 origin-0 text-sm text-sky-500" for="{{ field.id_for_label }}">
                         {{ field.label }}{% if field.field.required %}*{% endif %}
                     </label>
                 </div>

@@ -1,0 +1,7 @@
+<ul class="pl-3 list-disc">
+    {% for post in latest_posts %}
+        <li>
+            <a href="{{ post.get_absolute_url }}" class="text-sm hover:text-sky-500">{{ post.title }}</a>
+        </li>
+    {% endfor %}
+</ul>

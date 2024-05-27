@@ -1,13 +1,14 @@
 {% extends "blog/base.html" %}
+{% load blog_tags %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
     <h1 class="py-10 text-center text-2xl font-bold ">{{ post.title }}</h1>
-    <p class="text-sky-300 font-medium italic">
+    <p class="text-right font-bold italic text-sm">
         Published {{ post.publish }} by {{ post.author }}
     </p>
-    {{ post.body|linebreaks }}
+    {{ post.body|markdown }}
 
     <p class="py-10">
         <a href="{% url 'blog:post_share' post.id %}">
@@ -15,22 +16,32 @@
         </a>
     </p>
 
+    <h2 class="font-bold text-lg pb-5">Similar posts</h2>
+    <ul class="list-disc text-lg pl-5">
+        {% for post in similar_posts %}
+            <li class="">
+                <a href="{{ post.get_absolute_url }}" class="font-semibold hover:text-sky-500">{{ post.title }}</a>
+            </li>
+        {% empty %}
+            <p class="text-sm italic">There are no similar posts yet.</p>
+        {% endfor %}
+    </ul>
+
     {% if comments %}
     {% with comments.count as total_comments %}
-        <h2 class="pb-10 font-bold italic">
+        <h2 class="py-5 font-bold italic">
             {{ total_comments }} comment{{ total_comments|pluralize }}
         </h2>
     {% endwith %}
-    {% endif %}
     {% for comment in comments %}
         <div class="pb-10">
-            <p class="text-sky-300 font-medium italic">Comment {{ forloop.counter }} by {{ comment.name }}
+            <p class="font-bold italic text-sm">Comment {{ forloop.counter }} by {{ comment.name }}
                 {{ comment.created }}
             </p>
             {{ comment.body|linebreaks }}
         </div>
-    {% empty %}
-        <p class="There are no comments"></p>
     {% endfor %}
+    {% endif %}
+
     {% include "blog/post/includes/comment_form.html" %}
 {% endblock %}

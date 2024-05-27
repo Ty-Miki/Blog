@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse
 
+from taggit.managers import TaggableManager
 class PublishedManager(models.Manager):
     def get_queryset(self) -> models.QuerySet:
         return super().get_queryset().filter(status=Post.Status.PUBLISHED)
@@ -33,6 +34,9 @@ class Post(models.Model):
     objects = models.Manager() # The default model manager.
     published = PublishedManager() # Custom model manager to access published posts.
 
+    # Add tags to posts.
+    tags = TaggableManager()
+    
     # Specify a default query ordering and add database index.
     class Meta:
         ordering = ["-publish"]

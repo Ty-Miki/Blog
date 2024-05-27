@@ -1,0 +1,53 @@
+{% extends "blog/base.html" %}
+{% load blog_tags %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+    {% if query %}
+        <h1 class="font-bold text-lg">Posts containing <span class="text-sky-500">{{ query }}.</span></h1>
+    
+        <h3 class="font-bold italic text-right">
+            {% with results.count as total_results %}
+                Found {{ total_results }} results{{ total_results|pluralize }}.
+            {% endwith %}
+        </h3>
+
+        {% for post in results %}
+            <h4 class="py-10 text-center text-2xl font-bold ">
+                <a href="{{ post.get_absolute_url }}" class="hover:text-sky-500">
+                    {{ post.title }}
+                </a>
+            </h4>
+            
+            <p class="pb-5 italic font-bold">
+                Tags:
+                {% for tag in post.tags.all %}
+                    <a href="{% url 'blog:post_list_by_tag' tag.slug %}" class=" hover:text-sky-500">
+                        {{ tag.name }}
+                    </a>
+                    {% if not forloop.last %}, {% endif %}
+                {% endfor %}
+            </p>
+
+            {{ post.body|markdown|truncatewords_html:30 }}
+        
+        {% empty %}
+            <p class="pt-10 font-bold">There are no results for <span class="text-sky-500 italic">{{ query }}.</span></p>
+        
+        {% endfor %}
+    
+    {% else %}
+        <form method="get">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+        
+            {% for field in form %}
+                <div class="relative z-0 mb-5">
+                    {{ field }}
+                </div>
+            {% endfor %}
+            <input type="submit" value="Search" class="w-full px-6 py-3 mt-3 text-lg text-white transition-all duration-150 ease-linear rounded-lg shadow outline-none bg-sky-500 hover:bg-sky-400 hover:shadow-lg focus:outline-none cursor-pointer">
+        </form>
+    {% endif %}
+{% endblock %}
